@@ -1,1 +1,1 @@
-# DataScience_JH_Coursera_Assignments
+Johns Hopkins Datascience Specialisation Assignments
