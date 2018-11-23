@@ -1,0 +1,183 @@
+---
+title: "Measuring Effects of Severe Weather on Public Health and Economic Cost"
+author: "Omar Nooerddin"
+date: "03/11/2018"
+output:
+  html_document:
+    df_print: paged
+  pdf_document: default
+---
+```{r global_options, include=FALSE}
+#Set ECHO true as a global option
+knitr::opts_chunk$set(echo=TRUE)
+#Set CACHE true as a global option
+knitr::opts_chunk$set(cache=TRUE)
+```
+
+#Synopsis
+This analysis will investigate the effects of severe weather events in the US. It will measure the effects of weather events on public health and economic consequences. As such the analysis will attempt to identify the weather phenomenon with greatest damage on public health and economic cost.
+
+For this analysis data of weather events from the US [National Oceanic and Atmospheric Administration][1] will be used. The acquired data contains severe weather events from 1950 till 2011. Description of the data can be found [here][2]
+
+#Data Processing
+Data being used for this analysis is in ".bz2" format and contains 902,297 observations covering the aforementioned period. To load the data we use `read.csv` function as it can read ".bz2" format directly:
+```{r loadData}
+#Load data
+StormData<-read.csv("StormData.csv.bz2")
+```
+
+To conduct the analysis the following variables will be used from the loaded data set to asses the effects on public health and economic cost:
+
+* **EVTYPE**: This is the type of severe weather event that is being recorded, e.g: hurricane, flood, snow etc...
+* **FATALITIES**: The number of fatalities the recorded weather event has caused
+* **INJURIES**: The number of injuries the recorded weather event has caused
+* **PROPDMG**: The Dollar value the weather event has inflicted on properties
+* **PROPDMGEXP**: This is an exponent value to be used with *PROPDMG* indicating its order of magnitude. e,g: if the value is "M" and number in *PROPDMG* is 2, therefore the damage is $2,000,000
+* **CROPDMG**: As per *PROPDMG* but with Crops
+* **CROPDMGEXP**: As per *CROPDMGEXP* but is applied to *CROPDMG*
+
+First we'll use the following question to guide us through the data processing process:
+
+>*Which types of severe weather events are most harmful with respect to population health?*
+
+As this question pertains to public health, we'll be using *FATALITIES* and *INJURIES* variables to assess the effects on public health. 
+
+First we ascertain the number of *Fatalities* these events inflicted:
+```{r FATALITIES}
+#Sum FATALITIES by EVTYPE
+fatalities<-aggregate(StormData$FATALITIES,by=list(StormData$EVTYPE),sum)
+
+#To reduce the data set to a manageable size, we're be only interested in "NON-ZERO" events, therefore will subset to non-zero values
+fatalitiesNoZero<-fatalities[fatalities$x!=0,]
+```
+
+Similarly we'll be measuring the number of *Injuries* the events has inflected:
+```{r INJURIES}
+#We do the same but with INJURIES variable
+injuries<-aggregate(StormData$INJURIES,by=list(StormData$EVTYPE),sum)
+
+#Get rid of events with zero fatalities
+injuriesNoZero<-injuries[injuries$x!=0,]
+```
+
+Finally we combine the number of fatalities and injuries (grouped by weather event type) into one table called `incidents` (number of incidents regardless if they caused a fatality or an injury)
+
+```{r combineInjFat}
+#Combine both data sets together to get an overall view of "incidents"
+incidents<-rbind(injuriesNoZero,fatalities)
+```
+
+After creating the `incident` data, we clean up the Event Type column called `Group.1`. This column conains typos for example:
+
+* AVALANCE instead of AVALANCHE
+
+Also Event Type description contains granular details that are not necessary for this analysis, for example:
+
+* `Hail 100` and `Hail 175`, which are both Hail events, but they referring to the hail/pellet size. As far as this analysis is concerned these two events are the same.
+
+As such, a lookup table was created with Event Type in one column containing events from the `StormData` table, and a mapping (or lookup value) in the other column. We load this table as follows:
+```{r loadLU}
+#Load lookup table
+lookup<-read.csv("lookup.csv")
+```
+
+Following the loading of the lookup table, we *find & replace* the Event Type in `incidents` and replace with simplified version from the *lookup table*
+
+```{r findNreplaceIncidents}
+#Replace EVTYPE with CATEGORY from the Lookup table
+incidents$Group.1<-lookup$CATEGORY[match(incidents$Group.1,lookup$EVTYPE)]
+```
+
+Following the above steps, we can now sum the total number of fatalities and injuries by the *simplified* Event Type, this will give us a view of the top weather event "offenders" which cause the most damage on public health in the US.
+
+For this last part of analysis we'll be using the `dplyr` package
+```{r TopOffenders}
+#Load dplyr
+suppressWarnings(require(dplyr))
+
+#Sum incidents by new category label then add calculate percentage
+incidentsFinal<- incidents %>% 
+  group_by(EventType = Group.1) %>% #Group by new "simplified" Event Type
+  summarise(totalIncidents = sum (x)) %>% #Sum num of incidents by "simplified" Event Type
+  arrange(desc(totalIncidents)) %>% #Arrange data in Descending order
+  mutate(percent = (totalIncidents/sum(totalIncidents))*100) #Calculate percentage for each Event Type
+```
+
+Second part of the data processing will attempt to prepare the data to answer the following question:
+
+>*Which types of events have the greatest economic consequences?*
+
+To prepare the data, we follow a similar process as the one followed for isolating and cleaning fatalities and injuries, though for this part it will be done using *PROPDMG* and *CROPDMG* to measure the economic damage of severe weather events.
+
+In similar fashion, we're going to:
+
+1. Sum PROPDMG by EVTYPE & PROPDMGEXP
+2. Keep only "NON-ZERO" events to reduce data size
+3. Do the above two steps but for CROPDMG
+4. Merge both resultant data sets
+5. Clean event type using lookup table to get a "simplified" event type
+6. Sum "Damage" by new simplified event type and apply exponent
+
+```{r EconDamage}
+#Subset Property Damage and isolate non-zero events
+propDamage<-aggregate(StormData$PROPDMG[StormData$PROPDMG!=0],by=list(StormData$EVTYPE[StormData$PROPDMG!=0],StormData$PROPDMGEXP[StormData$PROPDMG!=0]),sum)
+
+#Subset Crop Damage and isolate non-zero events
+cropDamage<-aggregate(StormData$CROPDMG[StormData$CROPDMG!=0],by=list(StormData$EVTYPE[StormData$CROPDMG!=0],StormData$PROPDMGEXP[StormData$CROPDMG!=0]),sum)
+
+#Merge Data of Crop and Property damage
+econDamage<-rbind(propDamage,cropDamage)
+
+#Find & Replace Event Type with simplified value in "lookup" table
+econDamage$Group.1<-lookup$CATEGORY[match(econDamage$Group.1,lookup$EVTYPE)]
+
+#Sum Damage by new simplified event and apply Exponent
+econDamageFinal<- econDamage %>% 
+  #Use case statement to convert exponent designator into a number and apply it to get total economic damage
+mutate(total = 
+         case_when(Group.2=="h" | Group.2=="H" ~ x*100, 
+                   Group.2=="K" ~ x*1000, Group.2=="m" | Group.2=="M" ~ x*1000000,
+                   Group.2=="B" ~ x*1000000000,TRUE ~ x)) %>% 
+  group_by(EventType = Group.1) %>% #Group by simplified event type
+summarise(totalDamage = sum(total)) %>% #Sum 'total' damage 
+arrange(desc(totalDamage)) #Arrange in descending order
+```
+
+#Result
+This analysis has set out to understand the effects of severe weather events from two perspectives:
+
+* Public Health perspective
+* Economic Cost perspective
+
+###Public Health Effects
+As stated earlier, in our Data Processing stage, we proceeded to answer the following questions:
+
+>*Which types of severe weather events are most harmful with respect to population health?*
+
+By considering the following pie chart of the top 10 contributors to harmful effects on public health, we can see that **Tornados** are by far the biggest contributors to fatalities and injuries:
+```{r pieChart}
+pie(head(incidentsFinal$totalIncidents,10),labels=head(incidentsFinal$EventType,10),main="Top 10 Weather Events with Harmful Effects on Public Health")
+```
+
+Furthermore by calcualting percentage contribution of each Event Type to total number of incidents (fatalities or injuries), we'll find that **Tornado** accounts for 62% of all incidents between 1950 and 2011. This is followed by **Wind** with 8%, then **Heat** also at 8%, after **Flood** events with 7% share and **Lightning** at 4%. Together all of these aforementioned events account for approximately 90% of fatalities and injuries across the US between 1950 and 2011. Table shows the top 10 offenders:
+```{r tableIncidents}
+head(data.frame(EventType = incidentsFinal$EventType , #Event Type
+                TotalIncidents = incidentsFinal$totalIncidents ,  #Total Incidents
+                ShareOfIncidents = paste(round(incidentsFinal$percent),"%")),10) #Percent contribution
+```
+
+###Economic Cost
+Another aspect of this analysis is to measure the economic damage that severe weather events have and which have the biggest effect, as per the question posed earlier:
+
+>*Which types of events have the greatest economic consequences?*
+
+Looking at the data attained from the processing of property damage and crop damage variables (top 10 events with most economic damage):
+```{r tableEconDamage}
+
+head(data.frame(EventType=econDamageFinal$EventType, EconDamageDollars=econDamageFinal$totalDamage, Percent=paste(round((econDamageFinal$totalDamage/sum(econDamageFinal$totalDamage)*100),2),"%")),10)
+```
+
+We see that **Hurricanes** have the biggest economic cost between all events, accounting for just less than 75% of damage, followed by **Floods** at approx 14%, and **Tornados** at 4%. Together they account for more than 90% of economics damage since 1950 until 2011.
+
+[1]:https://www.noaa.gov/
+[2]:https://d396qusza40orc.cloudfront.net/repdata%2Fpeer2_doc%2Fpd01016005curr.pdf
