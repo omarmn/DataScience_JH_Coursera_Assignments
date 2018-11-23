@@ -1,0 +1,25 @@
+#run_analysis.R
+----------------------------------------------------
+Running this script will produce 2 files: `mean_std_data_only.txt` & `meanVariablesPerSubjectPerActivity.txt`
+
+##mean_std_data_only.txt
+1. The script will read the x_train data and x_test data, and row bind them. 
+
+2. It will then do the same row binding for y_train data and y_test data, which are the activities (by number).
+
+3. Similarly it will do the same for Subject_test and Subject train data.
+
+4. After the aforementioned 3 row binding, these 3 tables will be column binded to produce one data set.
+
+5. It will then replace the activity numbers with activity strings(description), as per the "activity_lables.txt".
+
+6. The script will then apply column names, using the variables names (column names) that are in the feature.txt file.
+
+7. On this data set, the script will then look for columns with "mean" or "std", in order to select columns with mean or standard deviation data. This will then form another data set
+
+8. The above resultant data set is then exported as csv file called `mean_std_data_only.txt`
+
+code book for `mean_std_data_only.txt` please refer to `code_book.txt` in the same repo
+
+##meanVariablesPerSubjectPerActivity.txt
+On the data described in step 7, the plyr package is used to split the data by activity and subject id, and then apply mean on all the variables (columns) of that data set (minus the subject id and activity columns), producing `meanVariablesPerSubjectPerActivity.txt`
