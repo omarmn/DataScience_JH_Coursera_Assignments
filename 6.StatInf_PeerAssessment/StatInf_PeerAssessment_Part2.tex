@@ -1,0 +1,305 @@
+\documentclass[]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+\else % if luatex or xelatex
+  \ifxetex
+    \usepackage{mathspec}
+  \else
+    \usepackage{fontspec}
+  \fi
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+\fi
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\hypersetup{unicode=true,
+            pdftitle={Inferential Data Analysis of Tooth Growth},
+            pdfauthor={Omar Nooreddin},
+            pdfborder={0 0 0},
+            breaklinks=true}
+\urlstyle{same}  % don't use monospace font for urls
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\usepackage{longtable,booktabs}
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{0}
+% Redefines (sub)paragraphs to behave more like sections
+\ifx\paragraph\undefined\else
+\let\oldparagraph\paragraph
+\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+\let\oldsubparagraph\subparagraph
+\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+%%% Use protect on footnotes to avoid problems with footnotes in titles
+\let\rmarkdownfootnote\footnote%
+\def\footnote{\protect\rmarkdownfootnote}
+
+%%% Change title format to be more compact
+\usepackage{titling}
+
+% Create subtitle command for use in maketitle
+\newcommand{\subtitle}[1]{
+  \posttitle{
+    \begin{center}\large#1\end{center}
+    }
+}
+
+\setlength{\droptitle}{-2em}
+
+  \title{Inferential Data Analysis of Tooth Growth}
+    \pretitle{\vspace{\droptitle}\centering\huge}
+  \posttitle{\par}
+    \author{Omar Nooreddin}
+    \preauthor{\centering\large\emph}
+  \postauthor{\par}
+      \predate{\centering\large\emph}
+  \postdate{\par}
+    \date{11/21/2018}
+
+
+\begin{document}
+\maketitle
+
+knitr::opts\_chunk\$set(fig.height=4, fig.width=5) \#Synopsis This paper
+will endeavour to perform basic inferential data analysis on the Tooth
+Growth data set. More precisely it will assess the effects of vitamin C
+on tooth growth in guinea pigs, and will try and conclude there's a
+strong relationship or not.
+
+\section{Data Set Summary}\label{data-set-summary}
+
+The data set will this study will be using is the ToothGrowth data set.
+The following is the description of the data given with dataset (in R):
+
+The response is the length of odontoblasts (cells responsible for tooth
+growth) in 60 guinea pigs. Each animal received one of three dose levels
+of vitamin C (0.5, 1, and 2 mg/day) by one of two delivery methods,
+orange juice or ascorbic acid (a form of vitamin C and coded as VC).
+
+We can ascertain the above by looking at the dimension of the dataset:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{data}\NormalTok{(}\StringTok{"ToothGrowth"}\NormalTok{)}
+\KeywordTok{dim}\NormalTok{(ToothGrowth)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 60  3
+\end{verbatim}
+
+Delving deeper into each variable of the data:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{unique}\NormalTok{(ToothGrowth}\OperatorTok{$}\NormalTok{supp)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] VC OJ
+## Levels: OJ VC
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{unique}\NormalTok{(ToothGrowth}\OperatorTok{$}\NormalTok{dose)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.5 1.0 2.0
+\end{verbatim}
+
+We can see from the above, that there are two supplements(delivery
+methods): VC (Vitamin C) and OJ (Orange Juice). As for the dosages, it
+is indeed as per description either: 0.5, 1.0 or 2.0 mg/day of Vitamin
+C.
+
+\section{Exploring the Data Set}\label{exploring-the-data-set}
+
+To get a general idea of the effects of the different dosages on teeth
+length (split by delivery method/supplement) we are going to conisder
+the following plot:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{coplot}\NormalTok{(len }\OperatorTok{~}\StringTok{ }\NormalTok{dose }\OperatorTok{|}\StringTok{ }\NormalTok{supp, }\DataTypeTok{data =}\NormalTok{ ToothGrowth, }\DataTypeTok{panel =}\NormalTok{ panel.smooth, }\DataTypeTok{xlab =} \StringTok{"Length vs Dose, by supplement"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{StatInf_PeerAssessment_Part2_files/figure-latex/unnamed-chunk-3-1.pdf}
+
+It can be noted that the higher the dosage the more effect it has on
+tooth growth. Furthermore we can see the different effects for each
+delivery method on tooth growth, which can be verified by a box plot:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{boxplot}\NormalTok{(ToothGrowth}\OperatorTok{$}\NormalTok{len }\OperatorTok{~}\StringTok{ }\NormalTok{ToothGrowth}\OperatorTok{$}\NormalTok{supp, }\DataTypeTok{main=}\StringTok{"Boxplot of Length split by Supplement"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{StatInf_PeerAssessment_Part2_files/figure-latex/unnamed-chunk-4-1.pdf}
+
+It is evident that length of teeth that had OJ as a delivery method is
+higher.
+
+As such we will be investgating the following two hypotheses:
+
+\begin{itemize}
+\tightlist
+\item
+  Mean tooth growth by OJ is more than VC, while holding the dose
+  constant
+\item
+  The higher the dose, the more it promotes tooth growth, while holding
+  the delivery method constant
+\end{itemize}
+
+\section{Hypothesis}\label{hypothesis}
+
+To ascertain our assumptions above, we will perform confidence test
+using the \textbf{t-test}. Though for this we will check that this data
+is normally distrubted, and we will ascertain this by a Q-Q plot:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{qqnorm}\NormalTok{(ToothGrowth}\OperatorTok{$}\NormalTok{len)}
+\KeywordTok{qqline}\NormalTok{(ToothGrowth}\OperatorTok{$}\NormalTok{len, }\DataTypeTok{col=}\StringTok{"red"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{StatInf_PeerAssessment_Part2_files/figure-latex/unnamed-chunk-5-1.pdf}
+
+Following from above we will be testing whether method of delivery
+(supp) has any effect (i.e OJ vs VC) while holding the dose constant at
+0.5, 1.0 and 2.0. Our null hypothese \textbf{\(H_0:μ_{oj} = μ_{vc}\)},
+while our alternative hypothesis will be
+\textbf{\(H_a:μ_{oj} > μ_{vc}\)}. We are going to carry out a t-test and
+set our significance level \textbf{α} to 0.05 (note all code is in the
+Appendix):
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule
+dose constant at & p-value OJ v VC\tabularnewline
+\midrule
+\endhead
+0.5 & 0.0031793\tabularnewline
+1.0 & 0.0005192\tabularnewline
+2.0 & 0.5180742\tabularnewline
+\bottomrule
+\end{longtable}
+
+The above table informs that when holding the dose constant, for example
+at 0.5, when performing a t-test between \(μ_{oj}\) and \(μ_{vc}\), it
+will give us a p-value as reported in the table.
+
+For the second hypothesis, we will be testing whether a higher dose will
+have higher effect on mean toothgrowth, whilst holding the delivery
+method (supp) constant. Therefore, our hyptheses are as follows, null
+hypothesis: \textbf{\(H_0:μ_{0.5} = μ_{1.0}\)}, our alternative
+hypothsis: \textbf{\(H_:μ_{0.5} < μ_{1.0}\)}. We will repeat the test
+between dose 1.0 and 2.0 as well. As per previous test we are going to
+set our sigfcance level \textbf{α} to 0.05:
+
+\begin{longtable}[]{@{}lll@{}}
+\toprule
+supp method & p-value 0.5 v 1.0 & p-value 1.0 v 2.0\tabularnewline
+\midrule
+\endhead
+OJ & 4.39245952758075e-05 & 0.0195975710231221\tabularnewline
+VC & 3.40550885143253e-07 & 4.57780152831932e-05\tabularnewline
+\bottomrule
+\end{longtable}
+
+\emph{For complete of both tests code please check Appendix}
+
+\section{Conclusion}\label{conclusion}
+
+Following our T Tests performed above, almost all of them have show a
+p-value lower than the our signficance level \textbf{α} of 0.05. In
+other words, most tests have rejected the null hypothesis.
+
+We can conclude the following, that OJ as a delivery method had a
+positive effect on tooth growth when compared to VC. The only exception
+is when the dose was constant at 2.0 mg, where the p-value was quite
+high, i.e confirming our null hypothesis.
+
+Also for the dose, the higher the dose, the higher the tooth growth
+confirming our alternative hypothese \(H_a\).
+
+hello
+
+
+\end{document}

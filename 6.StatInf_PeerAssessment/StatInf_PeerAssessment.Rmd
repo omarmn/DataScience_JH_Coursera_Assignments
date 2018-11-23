@@ -1,0 +1,29 @@
+Simulate an exponential distribtuion
+X<-rexp(1000,rate=0.2)
+
+Select a random sample of 40 from the simulation, calculate their mean then record the mean in SampleMean. Repeat above 1000 times
+SampleMean=NULL
+for (i in 1:1000) SampleMean<-c(SampleMean, mean(X[sample(1:length(x),40)]))
+
+SampleVariance=NULL
+for (i in 1:1000) SampleVariance<-c(SampleVariance, var(x[sample(1:length(x),40)]))
+mean(SampleVariance)
+
+
+
+
+
+data(ToothGrowth)
+dim(ToothGrowth)
+str(ToothGrowth)
+unique(ToothGrowth$dose)
+coplot(len ~ dose | supp, data = ToothGrowth, panel = panel.smooth, xlab = "Length vs Dose, by supplement")
+boxplot(ToothGrowth$len ~ ToothGrowth$supp)
+qqnorm(ToothGrowth$len)
+
+
+t.test(oj$len[oj$dose==0.5],vc$len[vc$dose==0.5], alternative = "greater")$p.value
+t.test(vc$len[vc$dose==2],vc$len[vc$dose==0.5], alternative = "greater")$p.value
+```{r}
+?ToothGrowth
+```
