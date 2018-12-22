@@ -1,0 +1,65 @@
+---
+title: "Regression Models Course Project"
+author: "Omar Nooreddin"
+date: "12/22/2018"
+output: html_document
+---
+#Executive Summary
+This paper will endeavour to answer two questions: (1)Is an automatic or manual transmission better for a car's Miles Per Gallon (MPG); (2) And the difference, in MPG, between automatic and manual. For this we shall use the "mtcars" dataset in R.
+
+#Exploring Data
+As per the above, we will be using the mtcars data for this analysis:
+```{r}
+data(mtcars)
+dim(mtcars)
+```
+We can see that there are 11 variables and 32 observations provided in this dataset.
+
+To facilitate our analysis we will be converting the am variable into factor:
+```{r}
+mtcars$am   <- factor(mtcars$am,labels=c("Automatic","Manual"))
+```
+
+#Inferential Analysis
+As per our summary, we're going to look into the effect of manual vs automatic transmission on the MPG. For this initial analysis we can look at boxplot for MPG split by transmission:
+```{r, fig.height=3, fig.width=4}
+boxplot(mpg~am,data=mtcars,col=c('red','blue'),main="Boxplot MPG vs Transmission")
+```
+
+We can see from the plot above that the mean MPG of the Manual transmission is higher/better than automatic transmission. But to confirm our observation, we will perform a T Test on mpg split by transmission to attain the P-Value:
+```{r}
+t.test(mtcars$mpg[mtcars$am=="Automatic"],mtcars$mpg[mtcars$am=="Manual"])$p.value
+```
+
+We can see that the P-Value of `r t.test(mtcars$mpg[mtcars$am=="Automatic"],mtcars$mpg[mtcars$am=="Manual"])$p.value` strongly rejects the null hypothesis, further confirming the difference of MPG between Manual and Automatic.
+
+#Regression Analysis Investigating MPG
+Initially we'll investigate the relationship between MPG and transmission by using Least Squares method:
+```{r}
+fit1<-lm(mpg ~ am , data=mtcars)
+summary(fit1)
+```
+We can see that the R^2^ is `r summary(fit1)$r.squared` which indicates that the variable "am" accounts for 36% of MPG. As such we're going to use the rest of the variables in the dataset to investigate which variables contribute to MPG. For this we will be using the **step** function, which will go through all variables and selects model based on [AIC metric][1]. (Note: for 'step' function output check Appendix):
+```{r, results='hide'}
+fit2<-lm(mpg ~ . , data=mtcars)
+fit3<-step(fit2)
+```
+```{r}
+summary(fit3)
+```
+The model selected "fit3" has an R^2^ value of 85%, i.e this model (which includes weight, am and qsec) explains 85% of the variation in MPG with each coefficient ($\beta$ values) having a p-value of less than 5% (i.e they're statistically significant).
+
+#Residual plots
+For the plots check the appendix. We can see that the data is close to a Normal Distribution and the Residual plot shows an approximate homoscedastic variance.
+
+#Conclusions
+We can conculde that overall Manual transmission is better than Automatic when it comes to MPG. Also by looking at the chosen model ***fit3*** the average MPG for Automatic is 9.6, while Manual is 3 MPG higher than automatic.
+
+#APPENDIX
+```{r}
+par(mfrow = c(2,2))
+plot(fit3)
+```
+
+
+[1]:https://en.wikipedia.org/wiki/Akaike_information_criterion
