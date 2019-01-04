@@ -1,0 +1,154 @@
+---
+title: "Practical Machine Learning Assignment"
+author: "Omar Nooreddin"
+date: "1/3/2019"
+output: html_document
+---
+
+
+
+```{r global_options, include=FALSE}
+#Set ECHO true as a global option
+knitr::opts_chunk$set(echo=TRUE)
+#Set CACHE true as a global option
+knitr::opts_chunk$set(cache=TRUE)
+```
+
+#Introduction
+Using devices such as Jawbone Up, Nike FuelBand, and Fitbit it is now possible to collect a large amount of data about personal activity relatively inexpensively. These type of devices are part of the quantified self movement – a group of enthusiasts who take measurements about themselves regularly to improve their health, to find patterns in their behavior, or because they are tech geeks. One thing that people regularly do is quantify how much of a particular activity they do, but they rarely quantify how well they do it. In this project, your goal will be to use data from accelerometers on the belt, forearm, arm, and dumbell of 6 participants. They were asked to perform barbell lifts correctly and incorrectly in 5 different ways.
+
+The aim of this paper is to build a model that is able to accurately predict whether an exercise can be classed from A to E, i.e whether it's a good move or not, using the provided 20 test cases.
+
+#Loading Data
+First we'll load the Training data from csv file, and we'll load the 20 test cases as well.
+```{r loadData}
+#Load train and test data
+train<-read.csv("pml-training.csv")
+test<-read.csv("pml-testing.csv")
+```
+
+#Cleaning Data
+After loading the training and test sets, we can get a glimpse of the data:
+```{r viewData}
+str(train)
+```
+
+It can be noted that there are a lot of NA values, empty values " ", therefore  we'll endeavour to cleanup the data.
+
+Firstly, we're going to remove the first 7 variables/columns as they're just information about the participants and time stamps, so they don't add any value:
+```{r removeCols}
+#remove first seven variables/coumns since they have names/timestaps etc...
+train<-train[,-(1:7)]
+test<-test[,-(1:7)]
+```
+
+Now we're going to remove any variables that have more than 90% of observation as NA or " ":
+```{r removeNA}
+#remove variables/columns where more than 90% of observations are missing OR NA
+train<-train[,-(which(colSums(is.na(train) | train=="") > 0.9*dim(train)[1]))]
+test<-test[,-(which(colSums(is.na(test) | test=="") > 0.9*dim(test)[1]))]
+```
+
+Furthermore we're going to check if there are any variables with zero or near zero variance, as those will not help in building our models:
+```{r checkVar}
+#Check (and remove) variables with zero variance (or near zero)
+nearZeroVar(train)
+nearZeroVar(test)
+```
+
+Both returned zero variables with zero variance (or near it), as such we're not going to remove any variables and this will be the data set we're going to be working with.
+
+One final check we're going to do before moving on, after mangling the data as per above, we want to make sure that the training set has the same variables as the 20 test cases. Note we're going to remove the last columns (classe from the training set and problem_id from the test set), as we know these are the only differences:
+```{r identicalCheck}
+#make sure the variables/columns are the same across testing and training sets after mangling the data
+identical(names(test[,-53]),names(train[,-53]))
+```
+
+It has returned TRUE, therefore we can be assured that the sets have identical variables after data cleaning.
+
+#Partioning Data
+We're going to split our training set, into a training data and test data. Our split will be 75% and 25%, respectively.
+```{r dataPartioning}
+
+#Load required libraries
+suppressPackageStartupMessages(require(caret))
+suppressPackageStartupMessages(require(randomForest))
+suppressPackageStartupMessages(require(gbm))
+suppressPackageStartupMessages(require(rattle))
+
+#Set seed
+set.seed(456)
+
+#Split data into training and testing sets
+inTrain<-createDataPartition(y=train$classe,p=0.75,list=0)
+Training<-train[inTrain,]
+Testing<-train[-inTrain,]
+```
+
+#Cross Validation
+We're going to use K-Fold Cross Validation when  building/training our models. We're going to set it to 5 folds to avoid over fitting.
+```{r xVal}
+trcontrol=trainControl(method="cv", number=5)
+```
+
+#Model Building
+To build our models we're going to use the **train** function from the **caret** package. We're going to train our models using the following methods:
+
+- Classification Tree
+- Gradient Boosting
+- Random Forest
+
+Each model will be judged against its accuracy; the model with best accuracy will be selected and used to predict the 20 test cases provided.
+
+##Classification Tree
+We'll use the classification tree method using K-Fold cross validation:
+```{r classTreeTrain}
+fit_CT<-train(classe ~ . , data=Training, method="rpart", trControl=trcontrol)
+fancyRpartPlot(fit_CT$finalModel)
+```
+
+Following our training, we'll the test data created to measure the error/accuracy of our model:
+```{r predictValidat}
+pred_CT<-predict(fit_CT, newdata = Testing)
+```
+
+Finally we're going to produce a confusion matrix to measure the accuracy of the Classification Tree:
+```{r confuCL}
+confu_CT<-confusionMatrix(Testing$classe, pred_CT)
+confu_CT
+```
+
+We can see that the accuracy stands at ***49.3%*** (and out-of-sample error of 50.7%) which is pretty low. As such we'll move to our next model.
+
+##Gradient Boosting
+In similar fashion as above we're going to train the new model (with K-fold cross validation), test it against the test data and create a confusion matrix to inspect its accuracy:
+```{r gbmTrain}
+fit_GBM<-train(classe ~ . , data=Training, method="gbm",trControl=trcontrol, verbose=0)
+pred_GBM<-predict(fit_GBM,newdata = Testing)
+confu_GBM<-confusionMatrix(Testing$classe,pred_GBM)
+confu_GBM
+```
+
+We can see that there's a huge improvement using the Gradient Boosting method, pulling up accuracy to ***96.5%*** (conversely the out-of-sample error is 3.5%). Although we want to see if we can improve our accuracy even further, which brings us to our next model.
+
+##Random Forest
+Also, we're going to follow the same steps above though using Random Forest:
+```{r randForest}
+fit_RT<-train(classe ~ . , data=Training, method="rf",trControl=trcontrol)
+pred_RT<-predict(fit_RT,newdata = Testing)
+confu_RT<-confusionMatrix(Testing$classe,pred_RT)
+confu_RT
+```
+
+It can be noted that the accuracy improved even further to ***99.4%*** (and conversely our out-of-sample error dropped to 0.6%)
+
+#Conclusion
+Following our testing of various models and considering the accuracy of each, we're going to use the model produced using the Random Forest method to predict the 20 test cases, which will be used as answers to questions for the quiz. Although it should be noted that the Random Forest took significantly longer than Classification Trees and Gradient Boosting methods. As such, this will be the trade off to consider:
+```{r 20TestCase}
+pred_final<-predict(fit_RT,newdata = test)
+pred_final
+```
+
+
+###Data source
+The data was sourced from from this website: http://web.archive.org/web/20161224072740/http:/groupware.les.inf.puc-rio.br/har
