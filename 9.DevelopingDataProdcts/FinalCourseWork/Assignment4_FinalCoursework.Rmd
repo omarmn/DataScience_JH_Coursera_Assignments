@@ -13,7 +13,7 @@ As we know the equation for gradient of a linear equation is:
 
 $$\delta = \frac{Y_2 - Y_1}{X_2 - X_1}$$
 
-Which can be intrepreted how much Y changes with each change of 1 unit of X
+Which can be interpreted how much Y changes with each change of 1 unit of X
 
 The app will show students when the bigger the gradient the steeper the slop of the line, and conversely the smaller the gradient the shallower the line
 
