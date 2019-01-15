@@ -1,0 +1,34 @@
+---
+title: 'Data Products: Assignment 3'
+author: "Omar Nooreddin"
+date: "1/13/2019"
+output: ioslides_presentation
+---
+##Introduction
+This slidedeck will showcase a plot using the "mtcars" dataset and will use the `plot_ly` library
+
+##The code
+Below is the code that will be used to create the plot (please refer for next slide for the plot)
+```{r, eval=FALSE}
+#Load 'plot_ly' library
+suppressPackageStartupMessages(require(plotly))
+
+#Load 'mtcars' dataset
+data("mtcars")
+
+#create the plot
+plot_ly(mtcars, x=~wt, y=~mpg, type="scatter")
+```
+
+##The plot
+Below is the result of the code from the previous slide:
+```{r, echo=FALSE}
+#Load 'plot_ly' library
+suppressPackageStartupMessages(require(plotly))
+
+#Load 'mtcars' dataset
+data("mtcars")
+
+#create the plot
+plot_ly(mtcars, x=~wt, y=~mpg, type="scatter")
+```

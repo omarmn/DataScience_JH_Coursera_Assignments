@@ -1,0 +1,19 @@
+---
+title: 'Developing Data Products: Leaflet Assignment'
+author: "Omar Nooreddin"
+date: "1/9/2019"
+output: html_document
+---
+```{r}
+#Load Leaflet
+suppressPackageStartupMessages(require(leaflet))
+
+#Today's date
+date()
+
+#Create map using Leaflet
+map<-leaflet() %>% addTiles()
+
+#Show map
+map
+```

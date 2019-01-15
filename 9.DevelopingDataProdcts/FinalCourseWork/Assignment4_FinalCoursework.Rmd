@@ -1,0 +1,57 @@
+---
+title: 'Assignment 4: Final Coursework'
+author: "Omar Nooreddin"
+date: "1/14/2019"
+output: ioslides_presentation
+---
+
+##Introduction
+This is a shiny app intended to demonstrate how the value of a gradient changes the slope/shape of a linear plot, and it is aimed for educational purposes.
+
+###The Maths
+As we know the equation for gradient of a linear equation is:
+
+$$\delta = \frac{Y_2 - Y_1}{X_2 - X_1}$$
+
+Which can be intrepreted how much Y changes with each change of 1 unit of X
+
+The app will show students when the bigger the gradient the steeper the slop of the line, and conversely the smaller the gradient the shallower the line
+
+##The Code
+The app is created using `shinyapp` as web application. The student is asked to move a slider which sets the gradient which is then passed to shiny server as `input$grad`. This then used to calculate data as follows:
+```{r, eval=FALSE}
+    #We'll assume the gradient slider is set to 5
+    grad<-5
+    x    <- -5:5 
+    y    <- x*grad
+    
+    #Then we plot the graph as follows:
+    plot(x,y,col='red', type="l", ylim=c(-25,25), lwd=3, xaxt="n", yaxt="n")
+    axis(1, pos=0)
+    axis(2, pos=0)
+    abline(v=0, h=0)
+```
+
+Please refer for next slide to check result of this plot
+
+##The plot
+Once the code runs as per previous slide the a line will be plot and displayed as follows:
+```{r, echo=FALSE}
+    #We'll assume the gradient slider is set to 5
+    grad<-5
+    x    <- -5:5 
+    y    <- x*grad
+    
+    #Then we plot the graph as follows:
+    plot(x,y,col='red', type="l", ylim=c(-25,25), lwd=3, xaxt="n", yaxt="n")
+    axis(1, pos=0)
+    axis(2, pos=0)
+    abline(v=0, h=0)
+```
+
+##Check the webapp
+To check the app please the following link:
+
+https://omarnooreddin.shinyapps.io/gradientexplained/
+
+For the code, please refer to the github repo:
