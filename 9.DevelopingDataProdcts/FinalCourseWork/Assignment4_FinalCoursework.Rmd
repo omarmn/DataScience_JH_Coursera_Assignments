@@ -8,7 +8,7 @@ output: ioslides_presentation
 ##Introduction
 This is a shiny app intended to demonstrate how the value of a gradient changes the slope/shape of a linear plot, and it is aimed for educational purposes.
 
-###The Maths
+###***The Maths***
 As we know the equation for gradient of a linear equation is:
 
 $$\delta = \frac{Y_2 - Y_1}{X_2 - X_1}$$
@@ -55,3 +55,8 @@ To check the app please the following link:
 https://omarnooreddin.shinyapps.io/gradientexplained/
 
 For the code, please refer to the github repo:
+
+https://github.com/omarmn/DataScience_JH_Coursera_Assignments/tree/master/9.DevelopingDataProdcts/FinalCourseWork
+
+
+###***Thanks!***
