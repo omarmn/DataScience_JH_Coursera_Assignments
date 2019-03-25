@@ -1,0 +1,133 @@
+---
+title: "Capstone - Milestone Report"
+author: "Omar Nooreddin"
+date: "3/2/2019"
+output: html_document
+---
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(warning=FALSE, cache=TRUE)
+```
+#Introduction
+This report aims to prepare and analyse 3 files containing: news articles, blog posts and tweets, in the hopes of a stepping stone towards building a text predictor. In this report we'll:
+
+- Read the files
+- Prepare a data summary of these files
+- Clean the data
+- Build features to help in building a predictor model
+
+By doing the above, we will get a good understanding of the data we are using to build our text predictor.
+
+#Loading the Data
+As per above, we will load three files to analyse containing news articles, blog posts and tweets.
+```{r, cache=TRUE}
+suppressPackageStartupMessages(require(tm))
+suppressPackageStartupMessages(require(ngram))
+suppressPackageStartupMessages(require(knitr))
+
+#Set file paths
+twitterPath<-"final/en_US/en_US.twitter.txt"
+newsPath<-"final/en_US/en_US.news.txt"
+blogsPath<-"final/en_US/en_US.blogs.txt"
+
+#Read files
+twitter<-readLines(twitterPath)
+news<-readLines(newsPath)
+blogs<-readLines(blogsPath)
+```
+
+#Basic Data Summary
+In this section we will analyse aspects of the files we are dealing with. These aspects are:
+
+- Words in each file
+- Number of lines in each file
+- Words per line (i.e average words per line)
+- Size of each file
+(in megabytes)
+
+```{r}
+#Count number of lines in each file
+twitterLines<-length(twitter)
+newsLines<-length(news)
+blogsLines<-length(blogs)
+
+#Count number of words in each file
+twitterWords<-sum(sapply(strsplit(twitter,split=" "),length))
+newsWords<-sum(sapply(strsplit(news,split=" "),length))
+blogsWords<-sum(sapply(strsplit(blogs,split=" "),length))
+
+#Calculate size of each file
+twitterSize<-file.size(twitterPath)/1024^2
+newsSize<-file.size(newsPath)/1024^2
+blogsSize<-file.size(blogsPath)/1024^2
+
+#Suppress scientific notation display
+options(scipen=999)
+
+#Create table
+kable(data.frame(twitter=rbind(twitterWords,twitterLines,twitterWords/twitterLines,twitterSize),
+           news=rbind(newsWords,newsLines,newsWords/newsLines,newsSize),
+           blogs=rbind(blogsWords,blogsLines,blogsWords/blogsLines,blogsSize), 
+           row.names = rbind("Words","Lines", "Words/Line","Size (mb)")),digits=0)
+```
+
+We can see from the above table that number of words contained in each file is more or less the same; the number of lines is more in the twitter file, which is expected since tweets are restricted to a specific number of characters.
+
+#Cleaning Data
+In this section we are going to merge all the data together and clean it in order to perform analysis on it
+
+###Merging and Sampling Data
+First we will merge the data into one big source, after we will take a sample of the data (10% of its size) to perform analysis, this is to reduce time and load.
+```{r}
+#Combine all files together
+allText<-c(twitter,news,blogs)
+
+#Sample text file to reduce size
+allText<-sample(allText, 0.1*length(allText))
+```
+
+###Cleaning Data and Preparing Data
+To make our analysis much more meaningful, unnecessary data which is deemed to add no value to text prediction will be removed. We will remove:
+
+- Punctuation
+- Numbers
+
+Also, we will convert all letters to small/lower letters in order match all instances of the same word, which is crucial in our next step. For example: "The", "the" and "THe" will all be converted to "the".
+```{r}
+#Convert to lower letters
+allText<-tolower(allText)
+#Remove punctuation
+allText<-removePunctuation(allText)
+#Remove numbers
+allText<-removeNumbers(allText)
+```
+
+#Analysing Data (N-gram Analysis)
+We will perform an "n-gram" analysis on our cleaned data set. N-gram analysis is essentially a frequency count of n-group of words. For example, "in the", "who can" and "where the" are example of 2-gram (or bigram) groups and this section we will perform a frequency count for 1,2 and 3-gram. This will serve as a "feature" when we build our model.
+```{r}
+#Build n-grams
+allText<-paste(allText, collapse = " ")
+
+unigram<-get.phrasetable(ngram(allText, n=1))
+bigram<-get.phrasetable(ngram(allText, n=2))
+trigram<-get.phrasetable(ngram(allText, n=3))
+```
+Now that our analysis is done, we can visualise our results
+
+###Unigram (1-gram)
+```{r}
+#Plot n-grams
+barplot(head(unigram$freq,20),names.arg = head(unigram$ngrams,20),las=2, col="blue",ylim=range(pretty(c(0, head(unigram$freq,20)))), main="Unigram - Top 20", ylab = "frequency")
+```
+
+###Bigram (2-gram)
+```{r}
+barplot(head(bigram$freq,20),names.arg = head(bigram$ngrams,20),las=2, col="orange",ylim=range(pretty(c(0, head(bigram$freq,20)))), main="Bigram - Top 20", ylab = "frequency")
+```
+
+###Trigram (3-gram)
+```{r}
+barplot(head(trigram$freq,20),names.arg = head(trigram$ngrams,20),las=2, col="green",ylim=range(pretty(c(0, head(trigram$freq,20)))), main="Trigram - Top 20", ylab = "frequency")
+```
+
+#Conclusion and Observations
+Following this analysis it can be noted that performing analysis on text, or text mining, is a process intensive and time consuming exercise. As a result, a sample was taken to do the analysis. So in order to build a model, which is even more process intensive, novel solutions have to be implemented.

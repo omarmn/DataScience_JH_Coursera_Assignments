@@ -107,7 +107,7 @@ fit_CT<-train(classe ~ . , data=Training, method="rpart", trControl=trcontrol)
 fancyRpartPlot(fit_CT$finalModel)
 ```
 
-Following our training, we'll the test data created to measure the error/accuracy of our model:
+Following our training, we'll use the test data created to measure the error/accuracy of our model:
 ```{r predictValidat}
 pred_CT<-predict(fit_CT, newdata = Testing)
 ```

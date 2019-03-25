@@ -1,0 +1,42 @@
+---
+title: "Capstone - Text Predictor"
+author: "Omar Nooreddin"
+date: "3/20/2019"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Capston - Text Predictor
+
+In this (final) coursework, we're going to build a text predictor using three files of text containing:
+
+- Tweets
+- News articles
+- Blog posts
+
+These will be the basis to build our model
+
+## N-gram tables
+First we're going to build three tables:
+
+- Uni-gram
+- Bi-gram
+- Tri-gram
+
+These tables will be used to calculate probabilities which will be used to predict the next phrase.
+
+## Prediction Probability
+From the n-gram tables we're going to calculate the conditional probability for each token in these tables. Formally, given a sequence of phrases  $\omega_{i-1},\omega_{i-2}...\omega_{i-n}$ the conditional probability of of word ***$\omega_{i}$*** is:
+$$P(\omega_{i}|\omega_{i-1},\omega_{i-2}...\omega_{i-n})$$
+But since this will be computationally taxing, and will take too long to compute, we'll use Markov's assumption to simplify our conditional probability to:
+$$P(\omega_{i}|\omega_{i-1})$$
+As such, calculating probability:
+$$P(\omega_{i}|\omega_{i-1})=\frac{count(\omega_{i},\omega_{i-1})}{count(\omega_{i})}$$
+
+##The App
+You can access the app by using the following link: [https://omarnooreddin.shinyapps.io/CapstoneProject/](https://omarnooreddin.shinyapps.io/CapstoneProject/)
+
+Please allow the app to load the packages and data (about 5 seconds), you observe the loading bar at the bottom right corner of the screen and proceed after the loading bar disappears.
