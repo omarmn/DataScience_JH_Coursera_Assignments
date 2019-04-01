@@ -77,3 +77,4 @@ rankhospital <- function(state, outcome, num = "best") {
         stop(paste("Error in best (\"",state,"\", \"",outcome,"\") :  invalid outcome",sep=""))
       }
 }
+

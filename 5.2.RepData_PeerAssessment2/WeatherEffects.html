@@ -188,9 +188,17 @@ incidents$Group.1&lt;-lookup$CATEGORY[match(incidents$Group.1,lookup$EVTYPE)]</c
 <p>Following the above steps, we can now sum the total number of fatalities and injuries by the <em>simplified</em> Event Type, this will give us a view of the top weather event “offenders” which cause the most damage on public health in the US.</p>
 <p>For this last part of analysis we’ll be using the <code>dplyr</code> package</p>
 <pre class="r"><code>#Load dplyr
-suppressWarnings(require(dplyr))
-
-#Sum incidents by new category label then add calculate percentage
+suppressWarnings(require(dplyr))</code></pre>
+<pre><code>## Loading required package: dplyr</code></pre>
+<pre><code>## 
+## Attaching package: 'dplyr'</code></pre>
+<pre><code>## The following objects are masked from 'package:stats':
+## 
+##     filter, lag</code></pre>
+<pre><code>## The following objects are masked from 'package:base':
+## 
+##     intersect, setdiff, setequal, union</code></pre>
+<pre class="r"><code>#Sum incidents by new category label then add calculate percentage
 incidentsFinal&lt;- incidents %&gt;% 
   group_by(EventType = Group.1) %&gt;% #Group by new &quot;simplified&quot; Event Type
   summarise(totalIncidents = sum (x)) %&gt;% #Sum num of incidents by &quot;simplified&quot; Event Type
