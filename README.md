@@ -6,7 +6,7 @@ Below is a list of projects I worked on for my Data Science Specilisation. All c
 - Link to RMarkdown document on RPubs
 - A short description of the project
 
-<h1>Machine Learning - Fitness Excercise Classifier</h1>
+<h3>Machine Learning - Fitness Excercise Classifier</h3>
 
 http://rpubs.com/omarmn/machinelearning
 
