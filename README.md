@@ -1,4 +1,6 @@
-<h1>Introduction</h1>
+<h1>List of Projects</h1>
+
+<h3>Introduction</h3>
 
 Below is a list of projects I worked on for my Data Science Specilisation. All code is written in R. Each section has a:
 
@@ -12,31 +14,31 @@ http://rpubs.com/omarmn/machinelearning
 
 This project's aim was to build a classifier to classify correct vs incorrect execution of a gym exercise based on activity monitors sensor data (i.e Fitbit, Nike FuelBand). The data set used for training, is readings from such trackers with classification from A (correct execution) to E (completely incorrect execution). Various training methods were selected, starting with an accuracy of 49% and moving all the way to an accuracy of 99.4% (with Random Forest).
 
-<h2>Multivariate Regression Model for Petrol Consumption of Cars</h2>
+<h3>Multivariate Regression Model for Petrol Consumption of Cars</h3>
 
 http://rpubs.com/omarmn/regression
 
 This paper will endeavour to answer two questions: (1)Is an automatic or manual transmission better for a car's Miles Per Gallon (MPG); (2) What are the variables that affect MPG? Based on this we will build a model. For this investigation we shall use the "mtcars" data set in R.
 
-##NLP - N-gram Text Analysis
+<h3>NLP - N-gram Text Analysis</h3>
 
 http://rpubs.com/omarmn/milestoneReport
 
 This paper analyses three text files containing tweets, news articles and blog posts in order to build features for a text predictor.
 
-##Hypothesis Testing - Effects of Vitamin C on Tooth Growth
+<h3>Hypothesis Testing - Effects of Vitamin C on Tooth Growth</h3>
 
 http://rpubs.com/omarmn/statinference
 
 This paper will endeavour to perform basic inferential data analysis on the Tooth Growth data set. More precisely it will assess the effects of vitamin C on tooth growth in guinea pigs, and will try and conclude if there's a strong relationship or not.
 
-##Exploratory Data Analysis - Effects of Weather Events on Public Health and Economy
+<h3>Exploratory Data Analysis - Effects of Weather Events on Public Health and Economy</h3>
 
 http://rpubs.com/omarmn/RepReAssign2
 
 This is analysis investigate the effects of weather events on public health and economic costs. The data being used is sourced from NOAA:https://www.noaa.gov/  spanning the year 1950 to 2011.
 
-##Exploratory Data Analysis of Activity Monitor (e.g Fitbit)
+<h3>Exploratory Data Analysis of Activity Monitor (e.g Fitbit)</h3>
 
 http://rpubs.com/omarmn/activityexpl
 
@@ -46,7 +48,7 @@ This analysis uses data from an activity monitor and it attempts to answer the f
 - Are there differences in activity patterns between weekdays and weekends?
 - It also attempts to impute missing data
 
-##Exploratory Data Analysis of Household Energy Consumption
+<h3>Exploratory Data Analysis of Household Energy Consumption</h3>
 
 http://rpubs.com/omarmn/energyconsump
 
