@@ -1,4 +1,5 @@
-#Introduction
+<h1>Introduction<h1>
+
 Below is a list of projects I worked on for my Data Science Specilisation. All code is written in R. Each section has a:
 
 - Title
