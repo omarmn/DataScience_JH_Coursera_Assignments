@@ -18,7 +18,7 @@ This project's aim was to build a classifier to classify correct vs incorrect ex
 
 http://rpubs.com/omarmn/regression
 
-This paper will endeavour to answer two questions: (1)Is an automatic or manual transmission better for a car's Miles Per Gallon (MPG); (2) What are the variables that affect MPG? Based on this we will build a model. For this investigation we shall use the "mtcars" data set in R.
+This paper will endeavour to answer two questions: (1) Is an automatic or manual transmission better for a car's Miles Per Gallon (MPG); (2) What are the variables that affect MPG? Based on this,s we will build a model. For this investigation we shall use the "mtcars" data set in R.
 
 <h3>NLP - N-gram Text Analysis</h3>
 
@@ -30,20 +30,20 @@ This paper analyses three text files containing tweets, news articles and blog p
 
 http://rpubs.com/omarmn/statinference
 
-This paper will endeavour to perform basic inferential data analysis on the Tooth Growth data set. More precisely it will assess the effects of vitamin C on tooth growth in guinea pigs, and will try and conclude if there's a strong relationship or not.
+This paper will endeavour to perform basic inferential data analysis on the Tooth Growth data set. More precisely, it will assess the effects of vitamin C on tooth growth in guinea pigs, and will try and conclude if there's a strong relationship or not.
 
 <h3>Exploratory Data Analysis - Effects of Weather Events on Public Health and Economy</h3>
 
 http://rpubs.com/omarmn/RepReAssign2
 
-This is analysis investigate the effects of weather events on public health and economic costs. The data being used is sourced from NOAA:https://www.noaa.gov/  spanning the year 1950 to 2011.
+This analysis will investigate the effects of weather events on public health and economic costs. The data being used is sourced from NOAA:https://www.noaa.gov/  spanning the year 1950 to 2011.
 
 <h3>Exploratory Data Analysis of Activity Monitor (e.g Fitbit)</h3>
 
 http://rpubs.com/omarmn/activityexpl
 
-This analysis uses data from an activity monitor and it attempts to answer the following questions:
-- What is mean total number of steps taken per day?
+This analysis uses data from an activity monitor and it aims to answer the following questions:
+- What is the mean number of steps taken per day?
 - What is the average daily activity pattern?
 - Are there differences in activity patterns between weekdays and weekends?
 - It also attempts to impute missing data
@@ -52,6 +52,6 @@ This analysis uses data from an activity monitor and it attempts to answer the f
 
 http://rpubs.com/omarmn/energyconsump
 
-This analysis looks at exploring energy consumption in households across two days: 1/2/2007 to 2/2/2007.
+This analysis visualises energy consumption in households across two days: 1/2/2007 to 2/2/2007.
 
 
