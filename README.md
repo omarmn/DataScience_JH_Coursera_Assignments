@@ -2,13 +2,13 @@
 
 <h3>Introduction</h3>
 
-Below is a list of projects I worked on for my Data Science Specilisation. All code is written in R. Each section has a:
+Below is a list of projects I worked on for my Data Science Specialisation. All code is written in R. Each section has a:
 
 - Title
 - Link to RMarkdown document on RPubs
 - A short description of the project
 
-<h3>Machine Learning - Fitness Excercise Classifier</h3>
+<h3>Machine Learning - Fitness Exercise Classifier</h3>
 
 http://rpubs.com/omarmn/machinelearning
 
