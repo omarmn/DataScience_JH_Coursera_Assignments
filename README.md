@@ -52,6 +52,7 @@ This analysis uses data from an activity monitor and it aims to answer the follo
 
 http://rpubs.com/omarmn/energyconsump
 
-This analysis visualisesr energy consumption in households across two days: 1/2/2007 to 2/2/2007.
+This analysis visualises energy consumption in households across two days: 1/2/2007 to 2/2/2007.
+
 
 
