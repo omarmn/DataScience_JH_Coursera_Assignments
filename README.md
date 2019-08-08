@@ -8,6 +8,12 @@ Below is a list of projects I worked on for my Data Science Specialisation. All 
 - Link to RMarkdown document on RPubs
 - A short description of the project
 
+<h3>Machine Learning (NLP) - Complaints Classfier/h3>
+
+http://rpubs.com/omarmn/closerchallenge
+
+This piece of work, sets out to build a a complaints classifier using Machine Learning algorithms. The training set, is a complaints database, which contains a description of the issue and the "type" of the issue. Also, in this work endeavours to propose a new complaints categorisation (or a new issue "type") by use of Machine Learning algorithm.
+
 <h3>Machine Learning - Fitness Exercise Classifier</h3>
 
 http://rpubs.com/omarmn/machinelearning
