@@ -8,7 +8,7 @@ Below is a list of projects I worked on for my Data Science Specialisation. All 
 - Link to RMarkdown document on RPubs
 - A short description of the project
 
-<h3>Machine Learning (NLP) - Complaints Classfier/h3>
+<h3>Machine Learning (NLP) - Complaints Classfier</h3>
 
 http://rpubs.com/omarmn/closerchallenge
 
