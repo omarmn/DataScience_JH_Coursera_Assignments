@@ -8,6 +8,12 @@ Below is a list of projects I worked on for my Data Science Specialisation. All 
 - Link to RMarkdown document on RPubs
 - A short description of the project
 
+<h3>Satellite Image Analysis using Normalised Difference Vegetation Index</h3>
+
+http://rpubs.com/omarmn/dsfdsj
+
+This work investigates the use of remote sensing (satellite imagery), coupled with vegetation index (NDVI) to ascertain whether areas designated by the Portguese have complied with the law of fire protection and prevention. In analysing the images and applying the index, there is evidance that compliancy (or lack of it) can be acertained.
+
 <h3>Machine Learning (NLP) - Complaints Classfier</h3>
 
 http://rpubs.com/omarmn/closerchallenge
